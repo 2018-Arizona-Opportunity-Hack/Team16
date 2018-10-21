@@ -19,6 +19,8 @@ SCOPES = 'https://www.googleapis.com/auth/calendar'
 
 # name, experience, age, email, phone, 
 def jsonToList(json_file):
+    #import ast
+    #d = ast.literal_eval("{'code1':1,'code2':1}")
     with open(json_file) as f:
         data = json.load(f)
     #print(data)
@@ -31,10 +33,49 @@ def listToJson(list_table,json_name):
     with open(json_name, 'a+') as outfile:
         outfile.write(json_string)
 
-def send_email_notify(html_str,date_str,email_list):
+def send_email_notify(html_str,date_str_0,date_str_1,loc_str,email_list,require_num):
     me = "alpaca5566zzz@gmail.com"
-    #you = "ocasiychuang@gmail.com"
-    you = ", ".join(email_list)
+
+    ## Deal with email list based on history recored
+    ## input require_num
+
+    filename = "history.txt"
+    try:
+        fs = open(filename, "r+")
+    except:
+        fs = open(filename, "a+")
+    history = fs.readlines()
+    fs.close()
+    index = 0
+    history_list = []
+    for i,ival in enumerate(history):
+        #print(ival)
+        if ival.replace('\n', '') == html_str:
+            history_list = history[i+1].replace("\n","").replace(" ","")[1:-1].split(",")
+            history[i+1] = [k[1:-1] for k in history_list]
+            index = i+1
+            break
+  
+    history_dict = {}
+    for i in history[index]:
+        if i not in history_dict:
+            history_dict[i] = 1
+
+    #print(history_dict)
+    real_email_list = []
+    for i in email_list:
+        if len(real_email_list) == require_num: 
+            print("enough emails")
+            break
+        if i not in history_dict:
+            real_email_list.append(i)
+    #print(history[index],real_email_list)
+    #print(email_list)
+    history[index] = str(history[index] + real_email_list)+"\n"
+    with open(filename, "w") as fs:
+        fs.writelines(history)
+
+    you = ", ".join(real_email_list)
 
     # Create message container - the correct MIME type is multipart/alternative.
     msg = MIMEMultipart('alternative')
@@ -51,7 +92,9 @@ def send_email_notify(html_str,date_str,email_list):
       <body>
         <p>Hi Volunteer:<br>
            Hope you are doing great today,<br>
-           We will have an activity on {calendar_date} and please check with the button below if you are willing to join
+           We will have an event with following informations and please check with the button below if you are willing to join :) <br>
+           Time: {calendar_time_start} to {calendar_time_end}
+           Location: {calendar_location}
         </p>
         <table width="100%" cellspacing="0" cellpadding="0">
           <tr>
@@ -70,7 +113,7 @@ def send_email_notify(html_str,date_str,email_list):
        </table>
       </body>
     </html>
-    """.format(calendar_url=html_str,calendar_date=date_str,subtype='html')
+    """.format(calendar_url=html_str,calendar_time_start=date_str_0,calendar_time_end=date_str_1,calendar_location=loc_str,subtype='html')
     # Record the MIME types of both parts - text/plain and text/html.
     #part1 = MIMEText(text, 'plain')
     part2 = MIMEText(html, 'html')
@@ -108,39 +151,30 @@ def send_email_notify(html_str,date_str,email_list):
     # sendmail function takes 3 arguments: sender's address, recipient's address
     # and message to send - here it is sent as one string.
     #server.sendmail(me, you, msg.as_string())
-    server.sendmail(me, email_list, msg.as_string())
+    server.sendmail(me, real_email_list, msg.as_string())
     server.quit()
 
 def poll_attend(event_id,service,html_val):
+
+    ##page_token = None
+    ##while True:
+    ##    calendar_list = service.calendarList().list(pageToken=page_token).execute()
+    ##    for calendar_list_entry in calendar_list['items']:
+    ##        print(calendar_list_entry)
+    ##    page_token = calendar_list.get('nextPageToken')
+    ##    if not page_token:
+    ##        break
+
     event = service.events().get(calendarId='primary', eventId=event_id).execute()
-    
-    #filename = "history.txt"
-    #try:
-    #    fs = open(filename, "r+")
-    #except:
-    #    fs = open(filename, "a+")
-    #history = fs.readlines()
-    #fs.close()
-    #index = 0
-    #history_list = []
-    #for i,ival in enumerate(history):
-    #    #print(ival)
-    #    if ival.replace('\n', '') == html_val:
-    #        history_list = history[i+1].replace('\n','')
-    #        index = i
-    #        break
-    
-    #history_dict = {}
-    #for i in history_list:
-    #    if i not in history_dict:
-    #        history_dict[i] = 1
+    #print("\n") 
+    #print(event) 
 
     accept = reject = not_decide = 0
     email_list = []
     for attendee in event['attendees']:
         #if attendee not in history_dict:
             attendees = (attendee['email'],attendee['responseStatus'])
-            print(attendee['responseStatus'])
+            #print(attendee['responseStatus'])
             if attendee['responseStatus'] == "accepted":
                 email_list.append(attendee['email'])
                 accept += 1
@@ -151,13 +185,12 @@ def poll_attend(event_id,service,html_val):
 
     return email_list,accept,reject,not_decide
 
-def GE_main(create,html_val,json_file_name,require_num):
+##def GE_main(create,html_val,email_list,date_str,loc_str,text_str,require_num):
+def GE_main(create,html_val,email_list,require_num):
     filename = "event.txt" ##Name for local file to save for google calendar event URL and event ID
 
-    json_data = jsonToList(json_file_name)
-    #print(list(json_data.values())[0])
-    email_list = [ list(json_data.values())[0][i]["Email"] for i in list(json_data.values())[0]]
-    #html_val = "https://www.google.com/calendar/event?eid=N3FlcW5tOWlraTVjYnA5Y3VqZmR1NzhuMDBfMjAxODEwMjFUMTgwMDAwWiBhbHBhY2E1NTY2enp6QG0"
+    #json_data = jsonToList(json_file_name)
+    #email_list = [ list(json_data.values())[0][i]["Email"] for i in list(json_data.values())[0]]
 
     store = file.Storage('token.json')
     creds = store.get()
@@ -173,16 +206,13 @@ def GE_main(create,html_val,json_file_name,require_num):
       'location': '1216 E Vista Del Cerro Dr,. APT 2103N, Tempe, AZ 85281',
       'description': 'Opportunity Hack 2018',
       'start': {
-        'dateTime': '2018-10-21T11:00:00-07:00',
+        'dateTime': '2018-10-22T11:00:00-07:00',
         'timeZone': 'America/Phoenix',
       },
       'end': {
-        'dateTime': '2018-10-21T11:00:00-07:00',
+        'dateTime': '2018-10-22T11:00:00-07:00',
         'timeZone': 'America/Phoenix',
       },
-      'recurrence': [
-        'RRULE:FREQ=DAILY;COUNT=1'
-      ],
       'attendees': [],
       'sendUpdates': 'all',
       'reminders': {
@@ -205,7 +235,15 @@ def GE_main(create,html_val,json_file_name,require_num):
         for i,ival in enumerate(event_txt):
             #print(ival)
             if ival.replace('\n', '') == html_val:
-                return poll_attend(event_txt[i+1].replace('\n',''),service,html_val)
+                event = service.events().get(calendarId='primary', eventId=event_txt[i+1].replace('\n','')).execute()
+                result_list,accept,reject,not_decide = poll_attend(event_txt[i+1].replace('\n',''),service,html_val)
+
+                ##old_email_list = []
+                ##for k in event['attendees']:
+                ##    old_email_list.append(k['email'])
+
+                send_email_notify(event['htmlLink'],event['start']['dateTime'][:10]+" "+event['start']['dateTime'][11:17],event['end']['dateTime'][:10]+" "+event['end']['dateTime'][11:17],event['location'],email_list,require_num-accept-reject-not_decide)
+                return result_list
         print("Event Not Found")
         return []
     else:    
@@ -216,19 +254,20 @@ def GE_main(create,html_val,json_file_name,require_num):
         fs.write("\n")
         fs.write(new_event["id"])
         fs.write("\n")
-        send_email_notify(new_event['htmlLink'],new_event['start']['dateTime'][:10],email_list);
+        send_email_notify(new_event['htmlLink'],new_event['start']['dateTime'][:10]+" "+new_event['start']['dateTime'][11:17],new_event['end']['dateTime'][:10]+" "+new_event['end']['dateTime'][11:17],new_event['location'],email_list,require_num);
         print("Event Built")
         return [new_event["htmlLink"]]
 
 
-json_name = "test.json"
-#simple_list = jsonToList(json_name)
-#new_json_name = "test_new.json"
-#listToJson(simple_list,new_json_name)
+##json_name = "real.json"
+##simple_list = jsonToList(json_name)
+##new_json_name = "real_new.json"
+##listToJson(simple_list,new_json_name)
 
 #ge_create = True
 ge_create = False
-ge_html="https://www.google.com/calendar/event?eid=ajM1OGhrcGhrbTVzOGxtb2FmY3F0bnIxNDhfMjAxODEwMjFUMTgwMDAwWiBhbHBhY2E1NTY2enp6QG0"
-#vol_list = ['ocasiychuang@gmail.com','david9yieh@gmail.com']
-result_list,accept,reject,not_decide = GE_main(ge_create,ge_html,json_name,3)
-print(result_list,accept,reject,not_decide)
+#ge_html="https://www.google.com/calendar/event?eid=ajM1OGhrcGhrbTVzOGxtb2FmY3F0bnIxNDhfMjAxODEwMjFUMTgwMDAwWiBhbHBhY2E1NTY2enp6QG0"
+ge_html="https://www.google.com/calendar/event?eid=Y2szNzlzdXA5ZDU2b2lodnYyMXZtdGFodGsgYWxwYWNhNTU2Nnp6ekBt"
+vol_list = ['ocasiychuang@gmail.com','david9yieh@gmail.com']
+result_list = GE_main(ge_create,ge_html,vol_list,4)
+print(result_list)
