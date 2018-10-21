@@ -1,0 +1,31 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.row {
+	padding: 30px;
+	
+}
+
+#Preview {
+	position:relative;
+	left:-160px;
+}
+
+#preview-messege {
+	position:relative;
+	height: 300px;
+	width: 500px;
+	left: 320px;
+	background-color: black;
+}

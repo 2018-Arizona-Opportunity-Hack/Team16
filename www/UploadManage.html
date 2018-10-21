@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                <!-- Optional JavaScript -->
+                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8iX+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+                <script src="https://cdn.bootcss.com/jquery/3.3.1/core.js"></script>
+                <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+                <!-- Bootstrap CSS -->
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+                    <link href="signin.css" rel="stylesheet">
+                <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.3.1017/styles/kendo.common-material.min.css" />
+                <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.3.1017/styles/kendo.material.min.css" />
+                <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.3.1017/styles/kendo.material.mobile.min.css" />
+                <script src="https://kendo.cdn.telerik.com/2018.3.1017/js/kendo.all.min.js"></script>
+                <script src="http://kendo.cdn.telerik.com/2018.3.1017/js/jszip.min.js"></script>
+                <style>html { font-size: 10px; font-family: Arial, Helvetica, sans-serif; }</style>
+    </head>
+    <body class="text-center">
+        <div class="container">
+			<div class="row align-items-center">
+			<div class = "col-2">
+				<div class="card" style="width: 25rem; height: 14rem;">
+					<div id="example">
+						<div class="demo-section k-content">
+							<input name="files" id="files" type="file" aria-label="files" />
+							<br>
+							<br>
+								<button id="submit" class="k-button k-primary">Upload</button>
+								<br>
+								<br>
+								<button id = "save" class="k-button k-primary">save</button>
+						</div>
+						</div>		
+				</div>
+				</div>
+			<div class = "col-1">
+				<div tyle="width: 10rem; height: 6rem;">
+				</div>
+				</div>
+			<div class = "col-9">
+					<div class="card" style="width:1rem; height: 50rem;">
+						<div id="spreadsheet">
+						</div>
+						
+					</div>
+				</div>
+            </div>
+			</div>
+            <script>
+                $(document).ready(function() {
+                	//var jsonContent;
+                	$("#spreadsheet").kendoSpreadsheet();
+                    $("#submit").on('click', function(e){
+                          e.preventDefault();
+                          var file = document.getElementById("files").files[0];
+                          var workbook = new kendo.spreadsheet.Workbook({});
+                              workbook.fromFile(file).then(function(){
+                                      jsonContent = workbook.toJSON();
+                                      var spreadsheet = $("#spreadsheet").data("kendoSpreadsheet");
+                                      spreadsheet.fromJSON(jsonContent);
+                              })
+                    });
+                    $("#save").on('click', function(e){
+                    	/* var spreadsheet = $("#spreadsheet").data("kendoSpreadsheet");
+                    	var s = JSON.stringify(spreadsheet.toJSON());
+                    	alert(s)
+                    	$.ajax({
+                            url: "/app/",
+                            type: "post",
+                            datatype: 'json',
+                            data: {'json' : s},
+                            success: function(response){
+                                alert(response.message);
+                                alert(response.keys);
+                            }
+                        }); */
+                    	window.location.href = "http://localhost:8080/Home.html";
+                    }); 
+                });
+            </script>
+        </div>
+
+    </body>
+</html>
+

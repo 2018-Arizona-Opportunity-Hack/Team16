@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                <!-- Optional JavaScript -->
+                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8iX+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+                <script src="https://cdn.bootcss.com/jquery/3.3.1/core.js"></script>
+                <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+                <!-- Bootstrap CSS -->
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="signin.css" rel="stylesheet">
+        <script>
+            $(document).ready(function(){
+                $('#upload').click(function(){
+                    window.location.href = "http://localhost:8080/Upload.html";
+                });
+            });
+        </script>
+    </head>
+    <body class="text-center">
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+
+                <div >
+                    <span>
+                        <div class="card" style="width: 16rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Broadcast</h5>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+				<div >
+                    <span>
+                        <div style="width: 4rem;">
+
+                        </div>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <div class="card" style="width: 16rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Poll</h5>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+			<hr class="mb-3" style="border-color:#f5f5f5;">
+			<div class="row justify-content-around">
+                <div >
+                    <span>
+                        <div class="card" style="width: 24rem; height: 15rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Delivery Methods</h5>
+                                <div class="radio">
+									<label><input type="radio" name="optradio" checked>Email</label>
+								</div>
+								<div class="radio">
+									<label><input type="radio" name="optradio">SMS</label>
+								</div>
+                                <div class="radio">
+									<label><input type="radio" name="optradio" checked>Both/All</label>
+								</div>
+								<div class="radio">
+									<label><input type="radio" name="optradio">Voice Call</label>
+								</div>
+                            </div>
+                        </div>
+                    </span>
+				
+					<br>
+                </div>
+				</div>
+        </div>
+    </body>
+</html>

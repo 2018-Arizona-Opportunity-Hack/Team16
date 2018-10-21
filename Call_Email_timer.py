@@ -43,26 +43,26 @@
 # # writeRecord('003','cats',"2007-03-04T21:08:12","2007-03-04T21:20:12")
 # # writeRecord('004','cats',"2007-03-04T21:08:12","2007-03-04T21:20:12")
 # #
-def timer(time):
-    from apscheduler.schedulers.background import BackgroundScheduler
-
-    count = 0
-
-    def job_function():
-        print ("job executing")
-        global count, scheduler
-
-        # Execute the job till the count of 5
-        count = count + 1
-        if count == 5:
-            scheduler.remove_job('my_job_id')
-
-
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(job_function, 'interval', seconds=int(time), id='my_job_id')
-
-
-    scheduler.start()
+# def timer(time):
+#     from apscheduler.schedulers.background import BackgroundScheduler
+# 
+#     count = 0
+# 
+#     def job_function():
+#         print ("job executing")
+#         global count, scheduler
+# 
+#         # Execute the job till the count of 5
+#         count = count + 1
+#         if count == 5:
+#             scheduler.remove_job('my_job_id')
+# 
+# 
+#     scheduler = BackgroundScheduler()
+#     scheduler.add_job(job_function, 'interval', seconds=int(time), id='my_job_id')
+# 
+# 
+#     scheduler.start()
 
 
 # In[12]:
@@ -136,38 +136,38 @@ def timer(time):
 
 
 #timer
-def timer_SMS(days_,body,to_number):
-    from apscheduler.schedulers.background import BackgroundScheduler
-
-
-    count=0
-    def SMS1(body,to_number,count):
-
-        to_number=4802552099
-        from twilio.rest import Client
-
-        # Your Account SID from twilio.com/console
-        account_sid = "AC3d0e45500fdd987d07b4cd6f594b7ee5"
-        # Your Auth Token from twilio.com/console
-        auth_token  = "91a8726ff72cf2708643a513724d2997"
-
-        client = Client(account_sid, auth_token)
-
-        message = client.messages.create(
-            to='+1'+str(to_number),
-            from_="+14803780697",
-            body=str(body))
-        global count, scheduler
-
-        # Execute the job till the count of 5
-        count += 1
-        if count == 5:
-            scheduler.remove_job('my_job_id')
-
-
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(SMS1(body,to_number), 'interval', seconds=int(days_)*86400, id='my_job_id')
-    scheduler.start()
+# def timer_SMS(days_,body,to_number):
+#     from apscheduler.schedulers.background import BackgroundScheduler
+# 
+# 
+#     count=0
+#     def SMS1(body,to_number,count):
+# 
+#         to_number=4802552099
+#         from twilio.rest import Client
+# 
+#         # Your Account SID from twilio.com/console
+#         account_sid = "AC3d0e45500fdd987d07b4cd6f594b7ee5"
+#         # Your Auth Token from twilio.com/console
+#         auth_token  = "91a8726ff72cf2708643a513724d2997"
+# 
+#         client = Client(account_sid, auth_token)
+# 
+#         message = client.messages.create(
+#             to='+1'+str(to_number),
+#             from_="+14803780697",
+#             body=str(body))
+#         global count, scheduler
+# 
+#         # Execute the job till the count of 5
+#         count += 1
+#         if count == 5:
+#             scheduler.remove_job('my_job_id')
+# 
+# 
+#     scheduler = BackgroundScheduler()
+#     scheduler.add_job(SMS1(body,to_number), 'interval', seconds=int(days_)*86400, id='my_job_id')
+#     scheduler.start()
 
 
 
@@ -258,7 +258,7 @@ def phone1(to_number0):
 # In[6]:
 
 def SMS2(body,to_number0):
-    to_number0[]
+    to_number0 = []
     to_number=4252406185
     from twilio.rest import Client
 
@@ -280,7 +280,7 @@ def SMS2(body,to_number0):
 # In[248]:
 
 def phone2(to_number0):
-    to_number0=[]
+    to_number0 = []
     to_number=4252406185
     from twilio.rest import Client
 
