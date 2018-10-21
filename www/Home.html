@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                <!-- Optional JavaScript -->
+                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8iX+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+                <script src="https://cdn.bootcss.com/jquery/3.3.1/core.js"></script>
+                <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+                <!-- Bootstrap CSS -->
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="signin.css" rel="stylesheet">
+        <script>
+            $(document).ready(function(){
+                $('#upload').click(function(){
+                    window.location.href = "http://localhost:8080/Upload.html";
+                });
+                $('#manage').click(function(){
+                    window.location.href = "http://localhost:8080/Manage.html";
+                });
+                $('#send').click(function(){
+                    window.location.href = "http://localhost:8080/Send.html";
+                });
+            });
+        </script>
+    </head>
+    <body class="text-center">
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+				<div class="row justify-content-center align-items-center">
+                <div class = "col-12">
+                    <span>
+                        <div class="card" style="width: 50rem; height: 8rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Send Notification</h5>
+                                <button id="send" class="btn btn-primary">send </button>
+                            </div>
+                        </div>
+                    </span>
+				
+					<br>
+                </div>
+				</div>
+                <div >
+                    <span>
+                        <div class="card" style="width: 24rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage/review</h5>
+                                <button id="manage" class="btn btn-primary">Go </button>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+				<div >
+                    <span>
+                        <div style="width: 2rem;">
+
+                        </div>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <div class="card" style="width: 24rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Manage/UploadFiles</h5>
+                                <button id = "upload" class="btn btn-primary">Upload</button>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
